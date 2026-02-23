@@ -10,52 +10,39 @@ This guide will help you deploy the Surprise Basket application to Render.
 
 ## Deployment Options
 
-### Option 1: Using render.yaml (Recommended)
-
-The `render.yaml` file is already configured. Render will automatically detect it.
-
-1. Go to https://dashboard.render.com
-2. Click "New" → "Blueprint"
-3. Connect your GitHub repository: `harishragul2003/Tinted_Gift_Factory`
-4. Render will detect the `render.yaml` file
-5. Add environment variables:
-   - `DB_HOST`: Your Supabase host (e.g., db.xxx.supabase.co)
-   - `DB_NAME`: postgres
-   - `DB_USER`: postgres
-   - `DB_PASSWORD`: Your Supabase password
-6. Click "Apply"
-
-### Option 2: Manual Deployment
+### Option 1: Manual Deployment (Recommended for this setup)
 
 #### Deploy Backend
 
-1. Go to Render Dashboard
+1. Go to Render Dashboard (https://dashboard.render.com)
 2. Click "New" → "Web Service"
-3. Connect your GitHub repository
+3. Connect your GitHub repository: `harishragul2003/Tinted_Gift_Factory`
 4. Configure:
    - **Name**: surprise-basket-backend
    - **Region**: Oregon (US West)
    - **Branch**: main
-   - **Root Directory**: backend
+   - **Root Directory**: `backend` ← IMPORTANT!
    - **Environment**: Node
    - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
+   - **Start Command**: `node server.js`
    - **Plan**: Free
 
-5. Add Environment Variables:
+5. Add Environment Variables (click "Advanced" → "Add Environment Variable"):
    ```
    NODE_ENV=production
    PORT=5000
-   DB_HOST=your-supabase-host.supabase.co
+   DB_HOST=db.kmcwivtntaacrgivevww.supabase.co
    DB_PORT=5432
    DB_NAME=postgres
    DB_USER=postgres
    DB_PASSWORD=your-supabase-password
-   JWT_SECRET=your-random-secret-key
+   JWT_SECRET=your-random-secret-key-here
    FRONTEND_URL=https://your-frontend-url.onrender.com
    ```
 
 6. Click "Create Web Service"
+7. Wait for deployment to complete
+8. Copy your backend URL (e.g., https://surprise-basket-backend.onrender.com)
 
 #### Deploy Frontend
 
