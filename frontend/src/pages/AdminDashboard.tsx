@@ -744,9 +744,9 @@ function OrdersContent({ orders, loading, updateOrderStatus }: any) {
                           onChange={(e) => updateOrderStatus(order.id, e.target.value, 'payment')}
                           className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary-50 to-accent-50 dark:bg-gray-700 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 dark:text-white"
                         >
-                          <option>Payment Verification Pending</option>
-                          <option>Payment Verified</option>
-                          <option>Failed</option>
+                          <option value="Payment Verification Pending" className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">Payment Verification Pending</option>
+                          <option value="Payment Verified" className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">Payment Verified</option>
+                          <option value="Failed" className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">Failed</option>
                         </select>
                       </td>
                       <td className="py-4 px-4">
@@ -755,10 +755,10 @@ function OrdersContent({ orders, loading, updateOrderStatus }: any) {
                           onChange={(e) => updateOrderStatus(order.id, e.target.value, 'order')}
                           className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary-50 to-accent-50 dark:bg-gray-700 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 dark:text-white"
                         >
-                          <option>Pending</option>
-                          <option>Shipped</option>
-                          <option>Delivered</option>
-                          <option>Cancelled</option>
+                          <option value="Pending" className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">Pending</option>
+                          <option value="Shipped" className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">Shipped</option>
+                          <option value="Delivered" className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">Delivered</option>
+                          <option value="Cancelled" className="text-gray-900 dark:text-white bg-white dark:bg-gray-700">Cancelled</option>
                         </select>
                       </td>
                       <td className="py-4 px-4">
