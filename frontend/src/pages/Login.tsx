@@ -67,7 +67,7 @@ export default function Login() {
               </span>
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-lg">
-              {isLogin ? 'Login to continue shopping' : 'Join Surprise Basket today!'}
+              {isLogin ? 'Login to continue shopping' : 'Join Artify Aura today!'}
             </p>
           </div>
 

@@ -58,7 +58,7 @@ app.use('/api/admin/users', userRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Surprise Basket API is running' });
+  res.json({ status: 'OK', message: 'Artify Aura API is running' });
 });
 
 // Error handling middleware

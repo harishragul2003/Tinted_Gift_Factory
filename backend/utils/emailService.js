@@ -16,13 +16,13 @@ const transporter = nodemailer.createTransport({
 export const sendOrderConfirmation = async (userEmail, orderDetails) => {
   try {
     const mailOptions = {
-      from: `"Surprise Basket" <${process.env.EMAIL_USER}>`,
+      from: `"Artify Aura" <${process.env.EMAIL_USER}>`,
       to: userEmail,
-      subject: '🎁 Order Confirmation - Surprise Basket',
+      subject: '🎁 Order Confirmation - Artify Aura',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 30px; text-align: center;">
-            <h1 style="color: white; margin: 0;">🎁 Surprise Basket</h1>
+            <h1 style="color: white; margin: 0;">🎁 Artify Aura</h1>
           </div>
           
           <div style="padding: 30px; background: #f9fafb;">
@@ -57,7 +57,7 @@ export const sendOrderConfirmation = async (userEmail, orderDetails) => {
           </div>
           
           <div style="background: #1f2937; padding: 20px; text-align: center; color: white;">
-            <p style="margin: 0;">© 2024 Surprise Basket. All rights reserved.</p>
+            <p style="margin: 0;">© 2024 Artify Aura. All rights reserved.</p>
           </div>
         </div>
       `,
@@ -73,13 +73,13 @@ export const sendOrderConfirmation = async (userEmail, orderDetails) => {
 export const sendOrderStatusUpdate = async (userEmail, orderDetails) => {
   try {
     const mailOptions = {
-      from: `"Surprise Basket" <${process.env.EMAIL_USER}>`,
+      from: `"Artify Aura" <${process.env.EMAIL_USER}>`,
       to: userEmail,
       subject: `📦 Order Update - ${orderDetails.order_status}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 30px; text-align: center;">
-            <h1 style="color: white; margin: 0;">🎁 Surprise Basket</h1>
+            <h1 style="color: white; margin: 0;">🎁 Artify Aura</h1>
           </div>
           
           <div style="padding: 30px; background: #f9fafb;">
@@ -105,7 +105,7 @@ export const sendOrderStatusUpdate = async (userEmail, orderDetails) => {
           </div>
           
           <div style="background: #1f2937; padding: 20px; text-align: center; color: white;">
-            <p style="margin: 0;">© 2024 Surprise Basket. All rights reserved.</p>
+            <p style="margin: 0;">© 2024 Artify Aura. All rights reserved.</p>
           </div>
         </div>
       `,

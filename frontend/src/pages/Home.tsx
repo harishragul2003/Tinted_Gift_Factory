@@ -36,7 +36,7 @@ export default function Home() {
   const testimonials = [
     { name: 'Sarah Johnson', text: 'Amazing quality and fast delivery!', rating: 5 },
     { name: 'Mike Chen', text: 'Perfect gifts for every occasion.', rating: 5 },
-    { name: 'Emma Wilson', text: 'Highly recommend Surprise Basket!', rating: 5 },
+    { name: 'Emma Wilson', text: 'Highly recommend Artify Aura!', rating: 5 },
   ];
 
   return (

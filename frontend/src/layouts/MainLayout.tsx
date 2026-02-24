@@ -49,7 +49,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 🎁
               </motion.div>
               <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                Surprise Basket
+                Artify Aura
               </span>
             </Link>
 
