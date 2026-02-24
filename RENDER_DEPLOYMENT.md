@@ -37,8 +37,10 @@ This guide will help you deploy the Surprise Basket application to Render.
    DB_USER=postgres
    DB_PASSWORD=your-supabase-password
    JWT_SECRET=your-random-secret-key-here
-   FRONTEND_URL=https://your-frontend-url.onrender.com
+   FRONTEND_URL=https://artify-aura.vercel.app
    ```
+   
+   **IMPORTANT**: Make sure to set `FRONTEND_URL` to your actual Vercel deployment URL!
 
 6. Click "Create Web Service"
 7. Wait for deployment to complete
