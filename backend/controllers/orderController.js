@@ -52,12 +52,33 @@ export const getUserOrders = async (req, res) => {
       return res.status(403).json({ message: 'Access denied' });
     }
 
-    const result = await pool.query(
+    // Get user orders
+    const ordersResult = await pool.query(
       'SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC',
       [userId]
     );
 
-    res.json(result.rows);
+    // Get order items with product details for each order
+    const ordersWithItems = await Promise.all(
+      ordersResult.rows.map(async (order) => {
+        const itemsResult = await pool.query(`
+          SELECT 
+            oi.*,
+            p.name as product_name,
+            p.image_url as product_image
+          FROM order_items oi
+          LEFT JOIN products p ON oi.product_id = p.id
+          WHERE oi.order_id = $1
+        `, [order.id]);
+
+        return {
+          ...order,
+          items: itemsResult.rows
+        };
+      })
+    );
+
+    res.json(ordersWithItems);
   } catch (error) {
     console.error('Get user orders error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -66,8 +87,38 @@ export const getUserOrders = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM orders ORDER BY created_at DESC');
-    res.json(result.rows);
+    // Get all orders with user information
+    const ordersResult = await pool.query(`
+      SELECT 
+        o.*,
+        u.name as user_name,
+        u.email as user_email
+      FROM orders o
+      LEFT JOIN users u ON o.user_id = u.id
+      ORDER BY o.created_at DESC
+    `);
+
+    // Get order items with product details for each order
+    const ordersWithItems = await Promise.all(
+      ordersResult.rows.map(async (order) => {
+        const itemsResult = await pool.query(`
+          SELECT 
+            oi.*,
+            p.name as product_name,
+            p.image_url as product_image
+          FROM order_items oi
+          LEFT JOIN products p ON oi.product_id = p.id
+          WHERE oi.order_id = $1
+        `, [order.id]);
+
+        return {
+          ...order,
+          items: itemsResult.rows
+        };
+      })
+    );
+
+    res.json(ordersWithItems);
   } catch (error) {
     console.error('Get all orders error:', error);
     res.status(500).json({ message: 'Server error' });
