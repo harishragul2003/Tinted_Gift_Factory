@@ -65,7 +65,7 @@ export default function AdminDashboard() {
 
   const stats = {
     totalOrders: orders.length,
-    totalRevenue: orders.reduce((sum, o) => sum + o.total_amount, 0),
+    totalRevenue: orders.reduce((sum, o) => sum + parseFloat(o.total_amount || 0), 0),
     pendingOrders: orders.filter(o => o.order_status === 'Pending').length,
     completedOrders: orders.filter(o => o.order_status === 'Delivered').length,
   };
