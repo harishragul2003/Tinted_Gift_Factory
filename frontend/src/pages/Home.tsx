@@ -106,17 +106,13 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <motion.div
-              animate={{ y: [0, -30, 0], rotate: [0, 5, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative z-10"
-            >
+            <div className="relative z-10">
               <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary-400 via-accent-400 to-primary-500 p-2 shadow-2xl animate-gradient bg-200%">
                 <div className="w-full h-full rounded-3xl bg-white dark:bg-gray-800 flex items-center justify-center text-6xl md:text-7xl shadow-inner">
                   🎁
                 </div>
               </div>
-            </motion.div>
+            </div>
             
             {/* Floating Elements */}
             <motion.div
