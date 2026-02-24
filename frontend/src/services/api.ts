@@ -40,6 +40,7 @@ export const productAPI = {
 export const categoryAPI = {
   getAll: () => api.get<Category[]>('/categories'),
   create: (data: Partial<Category>) => api.post<Category>('/categories', data),
+  delete: (id: string) => api.delete(`/categories/${id}`),
 };
 
 // Order APIs

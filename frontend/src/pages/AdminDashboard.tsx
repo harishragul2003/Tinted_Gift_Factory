@@ -875,6 +875,18 @@ function CategoriesContent() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this category? Products in this category will have their category removed.')) return;
+    
+    try {
+      await categoryAPI.delete(id);
+      loadCategories();
+    } catch (error) {
+      console.error('Failed to delete category', error);
+      alert('Failed to delete category. Please try again.');
+    }
+  };
+
   const closeModal = () => {
     setShowModal(false);
     setFormData({ name: '', description: '', icon: '' });
@@ -924,9 +936,15 @@ function CategoriesContent() {
               <div className="text-5xl mb-4">{category.icon || '📦'}</div>
               <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">{category.name}</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">{category.description || 'No description'}</p>
-              <div className="text-sm text-gray-500 dark:text-gray-500">
+              <div className="text-sm text-gray-500 dark:text-gray-500 mb-4">
                 Created: {new Date(category.created_at).toLocaleDateString()}
               </div>
+              <button
+                onClick={() => handleDelete(category.id)}
+                className="w-full px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300"
+              >
+                Delete Category
+              </button>
             </motion.div>
           ))}
         </div>
