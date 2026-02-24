@@ -337,17 +337,22 @@ function ProductsContent() {
         image_url: formData.image_url
       };
 
+      console.log('Submitting product:', editingProduct ? 'UPDATE' : 'CREATE', productData);
+
       if (editingProduct) {
-        await productAPI.update(editingProduct.id, productData);
+        const response = await productAPI.update(editingProduct.id, productData);
+        console.log('Update response:', response);
       } else {
-        await productAPI.create(productData);
+        const response = await productAPI.create(productData);
+        console.log('Create response:', response);
       }
       
       loadProducts();
       closeModal();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to save product', error);
-      alert('Failed to save product. Please try again.');
+      console.error('Error details:', error.response?.data);
+      alert(`Failed to save product: ${error.response?.data?.message || error.message}`);
     }
   };
 
