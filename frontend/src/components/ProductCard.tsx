@@ -65,11 +65,11 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       {/* Content */}
       <div className="p-5 relative z-10">
         <Link to={`/products/${product.id}`}>
-          <h3 className="font-bold text-lg mb-2 line-clamp-2 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-primary-600 hover:to-accent-600 transition-all duration-300">
+          <h3 className="font-bold text-lg mb-2 line-clamp-2 text-gray-900 dark:text-white hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-primary-600 hover:to-accent-600 transition-all duration-300">
             {product.name}
           </h3>
         </Link>
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
           {product.description}
         </p>
         

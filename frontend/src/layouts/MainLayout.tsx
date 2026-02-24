@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useTheme } from '../context/ThemeContext';
 import { useState } from 'react';
+import Footer from '../components/Footer';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -212,6 +213,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 relative z-10">{children}</main>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 glass-effect border-t border-primary-200 dark:border-gray-700 z-50 shadow-2xl shadow-primary-500/20">
