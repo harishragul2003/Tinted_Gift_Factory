@@ -43,10 +43,10 @@ export default function Home() {
     <div className="space-y-20">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
@@ -67,7 +67,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl text-gray-600 dark:text-gray-300"
+              className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
             >
               Discover premium, curated gift collections for every special moment. 
               Make memories that last forever.
@@ -77,7 +77,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-4"
+              className="flex flex-wrap gap-4 justify-center"
             >
               <Link to="/products">
                 <motion.button
@@ -99,50 +99,7 @@ export default function Home() {
               </motion.button>
             </motion.div>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative max-w-sm mx-auto"
-          >
-            <motion.div 
-              className="relative z-10"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
-            >
-              <motion.div 
-                className="aspect-square rounded-3xl bg-gradient-to-br from-primary-400 via-accent-400 to-primary-500 p-2 shadow-2xl animate-gradient bg-200%"
-                animate={{ 
-                  boxShadow: [
-                    "0 25px 50px -12px rgba(236, 72, 153, 0.25)",
-                    "0 25px 50px -12px rgba(139, 92, 246, 0.25)",
-                    "0 25px 50px -12px rgba(236, 72, 153, 0.25)"
-                  ]
-                }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <div className="w-full h-full rounded-3xl bg-white dark:bg-gray-800 flex items-center justify-center text-5xl md:text-6xl shadow-inner">
-                  🎁
-                </div>
-              </motion.div>
-            </motion.div>
-            
-            {/* Floating Elements */}
-            <motion.div
-              animate={{ y: [0, -40, 0], rotate: [0, 15, 0], scale: [1, 1.2, 1] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-10 -right-10 text-7xl drop-shadow-2xl"
-            >
-              ✨
-            </motion.div>
-            <motion.div
-              animate={{ y: [0, 40, 0], rotate: [0, -15, 0], scale: [1, 1.2, 1] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-10 -left-10 text-7xl drop-shadow-2xl"
-            >
-              🎀
-            </motion.div>
+        </div>
             <motion.div
               animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 3, repeat: Infinity }}
