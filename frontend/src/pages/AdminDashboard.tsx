@@ -1049,6 +1049,34 @@ function SettingsContent() {
 
 // Customers Tab Content
 function CustomersContent({ users, loadUsers }: { users: User[]; loadUsers: () => void }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [roleFilter, setRoleFilter] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+
+  useEffect(() => {
+    filterUsers();
+  }, [users, searchQuery, roleFilter]);
+
+  const filterUsers = () => {
+    let filtered = [...users];
+
+    // Filter by search query
+    if (searchQuery) {
+      filtered = filtered.filter(user =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (user.phone && user.phone.includes(searchQuery))
+      );
+    }
+
+    // Filter by role
+    if (roleFilter) {
+      filtered = filtered.filter(user => user.role === roleFilter);
+    }
+
+    setFilteredUsers(filtered);
+  };
+
   const updateUserRole = async (userId: string, newRole: string) => {
     try {
       await userAPI.updateRole(userId, newRole);
@@ -1094,6 +1122,48 @@ function CustomersContent({ users, loadUsers }: { users: User[]; loadUsers: () =
           </div>
         </div>
 
+        {/* Search and Filter Bar */}
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div className="md:col-span-2">
+            <input
+              type="text"
+              placeholder="🔍 Search by name, email, or phone..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-md"
+            />
+          </div>
+          <div>
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-md"
+            >
+              <option value="">All Roles</option>
+              <option value="user">Users Only</option>
+              <option value="admin">Admins Only</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Results Count */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-gray-600 dark:text-gray-400">
+            Showing {filteredUsers.length} of {users.length} customers
+          </p>
+          {(searchQuery || roleFilter) && (
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setRoleFilter('');
+              }}
+              className="text-primary-600 dark:text-primary-400 hover:underline text-sm font-medium"
+            >
+              Clear Filters
+            </button>
+          )}
+        </div>
+
         <div className="overflow-x-auto custom-scrollbar">
           <table className="w-full">
             <thead>
@@ -1107,7 +1177,7 @@ function CustomersContent({ users, loadUsers }: { users: User[]; loadUsers: () =
               </tr>
             </thead>
             <tbody>
-              {users.map((user: User) => (
+              {filteredUsers.map((user: User) => (
                 <tr key={user.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-primary-200/50 dark:hover:bg-gray-700 transition-all duration-300">
                   <td className="py-4 px-4 font-semibold text-gray-900 dark:text-white">{user.name}</td>
                   <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{user.email}</td>
@@ -1116,7 +1186,7 @@ function CustomersContent({ users, loadUsers }: { users: User[]; loadUsers: () =
                     <select
                       value={user.role}
                       onChange={(e) => updateUserRole(user.id, e.target.value)}
-                      className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary-50 to-accent-50 dark:bg-gray-700 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="px-3 py-2 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     >
                       <option value="user">User</option>
                       <option value="admin">Admin</option>
@@ -1137,10 +1207,20 @@ function CustomersContent({ users, loadUsers }: { users: User[]; loadUsers: () =
           </table>
         </div>
 
-        {users.length === 0 && (
+        {filteredUsers.length === 0 && (
           <div className="text-center py-12">
-            <div className="text-6xl mb-4">👥</div>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">No customers found</p>
+            <div className="text-6xl mb-4">
+              {searchQuery || roleFilter ? '🔍' : '👥'}
+            </div>
+            <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+              {searchQuery || roleFilter ? 'No Customers Found' : 'No Customers Yet'}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">
+              {searchQuery || roleFilter 
+                ? 'Try adjusting your search or filter criteria'
+                : 'No customers have registered yet'
+              }
+            </p>
           </div>
         )}
       </motion.div>
