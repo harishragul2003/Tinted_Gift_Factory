@@ -18,7 +18,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   'http://localhost:3000',
   'http://localhost:5173',
-  /https:\/\/tinted-artworks.*\.vercel\.app$/ // Allow all Vercel preview deployments
+  /https:\/\/artify-aura.*\.vercel\.app$/ // Allow all Vercel preview deployments
 ];
 
 app.use(cors({
