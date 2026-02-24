@@ -42,13 +42,13 @@ export default function Home() {
   return (
     <div className="space-y-20">
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="relative overflow-hidden min-h-[80vh] flex items-center justify-center">
+        <div className="max-w-4xl mx-auto text-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-6"
+            className="space-y-8"
           >
             <motion.h1
               className="text-5xl md:text-7xl font-bold leading-tight"
@@ -67,7 +67,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl text-gray-600 dark:text-gray-300"
+              className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
             >
               Discover premium, curated gift collections for every special moment. 
               Make memories that last forever.
@@ -77,7 +77,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-4"
+              className="flex flex-wrap gap-4 justify-center"
             >
               <Link to="/products">
                 <motion.button
