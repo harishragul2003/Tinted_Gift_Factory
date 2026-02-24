@@ -674,6 +674,12 @@ function ProductsContent() {
 
 // Orders Tab Content
 function OrdersContent({ orders, loading, updateOrderStatus }: any) {
+  const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
+
+  const toggleOrderDetails = (orderId: string) => {
+    setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
   return (
     <div className="max-w-7xl mx-auto">
       <motion.div
@@ -692,16 +698,22 @@ function OrdersContent({ orders, loading, updateOrderStatus }: any) {
         animate={{ opacity: 1, y: 0 }}
         className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-primary-100 dark:border-primary-900"
       >
-        <h2 className="text-2xl font-bold mb-6 animate-gradient-text">All Orders</h2>
+        <h2 className="text-2xl font-bold mb-6 animate-gradient-text">All Orders ({orders.length})</h2>
 
         {loading ? (
           <p className="text-center py-8">Loading...</p>
+        ) : orders.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">📦</div>
+            <p className="text-gray-600 dark:text-gray-400 text-lg">No orders yet</p>
+          </div>
         ) : (
           <div className="overflow-x-auto custom-scrollbar">
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-primary-200 dark:border-gray-700">
                   <th className="text-left py-4 px-4 font-bold">Order ID</th>
+                  <th className="text-left py-4 px-4 font-bold">Customer</th>
                   <th className="text-left py-4 px-4 font-bold">Date</th>
                   <th className="text-left py-4 px-4 font-bold">Amount</th>
                   <th className="text-left py-4 px-4 font-bold">Payment</th>
@@ -711,39 +723,106 @@ function OrdersContent({ orders, loading, updateOrderStatus }: any) {
               </thead>
               <tbody>
                 {orders.map((order: any) => (
-                  <tr key={order.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-primary-200/50 dark:hover:bg-gray-700 transition-all duration-300">
-                    <td className="py-4 px-4 font-semibold text-gray-900 dark:text-white">#{order.id.slice(0, 8)}</td>
-                    <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{new Date(order.created_at).toLocaleDateString()}</td>
-                    <td className="py-4 px-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-600">₹{order.total_amount}</td>
-                    <td className="py-4 px-4">
-                      <select
-                        value={order.payment_status}
-                        onChange={(e) => updateOrderStatus(order.id, e.target.value, 'payment')}
-                        className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary-50 to-accent-50 dark:bg-gray-700 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      >
-                        <option>Payment Verification Pending</option>
-                        <option>Payment Verified</option>
-                        <option>Failed</option>
-                      </select>
-                    </td>
-                    <td className="py-4 px-4">
-                      <select
-                        value={order.order_status}
-                        onChange={(e) => updateOrderStatus(order.id, e.target.value, 'order')}
-                        className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary-50 to-accent-50 dark:bg-gray-700 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      >
-                        <option>Pending</option>
-                        <option>Shipped</option>
-                        <option>Delivered</option>
-                        <option>Cancelled</option>
-                      </select>
-                    </td>
-                    <td className="py-4 px-4">
-                      <button className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300">
-                        View
-                      </button>
-                    </td>
-                  </tr>
+                  <>
+                    <tr key={order.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-primary-200/50 dark:hover:bg-gray-700 transition-all duration-300">
+                      <td className="py-4 px-4 font-semibold text-gray-900 dark:text-white">#{order.id.slice(0, 8)}</td>
+                      <td className="py-4 px-4 text-gray-700 dark:text-gray-300">
+                        <div className="text-sm">
+                          <div className="font-medium">{order.user_name || 'Guest'}</div>
+                          <div className="text-gray-500 dark:text-gray-400">{order.phone}</div>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4 text-gray-700 dark:text-gray-300">{new Date(order.created_at).toLocaleDateString()}</td>
+                      <td className="py-4 px-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-600">₹{order.total_amount}</td>
+                      <td className="py-4 px-4">
+                        <select
+                          value={order.payment_status}
+                          onChange={(e) => updateOrderStatus(order.id, e.target.value, 'payment')}
+                          className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary-50 to-accent-50 dark:bg-gray-700 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 dark:text-white"
+                        >
+                          <option>Payment Verification Pending</option>
+                          <option>Payment Verified</option>
+                          <option>Failed</option>
+                        </select>
+                      </td>
+                      <td className="py-4 px-4">
+                        <select
+                          value={order.order_status}
+                          onChange={(e) => updateOrderStatus(order.id, e.target.value, 'order')}
+                          className="px-3 py-2 rounded-lg bg-gradient-to-r from-primary-50 to-accent-50 dark:bg-gray-700 text-sm font-medium border border-primary-200 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 text-gray-900 dark:text-white"
+                        >
+                          <option>Pending</option>
+                          <option>Shipped</option>
+                          <option>Delivered</option>
+                          <option>Cancelled</option>
+                        </select>
+                      </td>
+                      <td className="py-4 px-4">
+                        <button 
+                          onClick={() => toggleOrderDetails(order.id)}
+                          className="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300"
+                        >
+                          {expandedOrder === order.id ? 'Hide' : 'View'} Details
+                        </button>
+                      </td>
+                    </tr>
+                    {expandedOrder === order.id && (
+                      <tr>
+                        <td colSpan={7} className="bg-primary-50 dark:bg-gray-900 p-6">
+                          <div className="space-y-4">
+                            <div className="grid md:grid-cols-2 gap-6">
+                              <div>
+                                <h4 className="font-bold text-lg mb-3 text-gray-900 dark:text-white">Shipping Address</h4>
+                                <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{order.shipping_address}</p>
+                                <p className="text-gray-700 dark:text-gray-300 mt-2">Phone: {order.phone}</p>
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-lg mb-3 text-gray-900 dark:text-white">Payment Details</h4>
+                                <p className="text-gray-700 dark:text-gray-300">Transaction ID: {order.transaction_id || 'N/A'}</p>
+                                <p className="text-gray-700 dark:text-gray-300">Status: {order.payment_status}</p>
+                                {order.payment_screenshot_url && (
+                                  <a 
+                                    href={order.payment_screenshot_url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="text-primary-600 dark:text-primary-400 hover:underline mt-2 inline-block"
+                                  >
+                                    View Payment Screenshot
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                            
+                            {order.items && order.items.length > 0 && (
+                              <div>
+                                <h4 className="font-bold text-lg mb-3 text-gray-900 dark:text-white">Order Items</h4>
+                                <div className="space-y-2">
+                                  {order.items.map((item: any, idx: number) => (
+                                    <div key={idx} className="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg">
+                                      <div className="flex items-center space-x-4">
+                                        <img 
+                                          src={item.product_image || 'https://via.placeholder.com/80'} 
+                                          alt={item.product_name}
+                                          className="w-16 h-16 object-cover rounded-lg"
+                                        />
+                                        <div>
+                                          <p className="font-semibold text-gray-900 dark:text-white">{item.product_name}</p>
+                                          <p className="text-sm text-gray-600 dark:text-gray-400">Quantity: {item.quantity}</p>
+                                        </div>
+                                      </div>
+                                      <p className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-accent-600">
+                                        ₹{item.price} × {item.quantity} = ₹{(item.price * item.quantity).toFixed(2)}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 ))}
               </tbody>
             </table>
