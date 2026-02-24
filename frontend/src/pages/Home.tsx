@@ -104,15 +104,29 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative"
+            className="relative max-w-sm mx-auto"
           >
-            <div className="relative z-10">
-              <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary-400 via-accent-400 to-primary-500 p-2 shadow-2xl animate-gradient bg-200%">
-                <div className="w-full h-full rounded-3xl bg-white dark:bg-gray-800 flex items-center justify-center text-6xl md:text-7xl shadow-inner">
+            <motion.div 
+              className="relative z-10"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.div 
+                className="aspect-square rounded-3xl bg-gradient-to-br from-primary-400 via-accent-400 to-primary-500 p-2 shadow-2xl animate-gradient bg-200%"
+                animate={{ 
+                  boxShadow: [
+                    "0 25px 50px -12px rgba(236, 72, 153, 0.25)",
+                    "0 25px 50px -12px rgba(139, 92, 246, 0.25)",
+                    "0 25px 50px -12px rgba(236, 72, 153, 0.25)"
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <div className="w-full h-full rounded-3xl bg-white dark:bg-gray-800 flex items-center justify-center text-5xl md:text-6xl shadow-inner">
                   🎁
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
             
             {/* Floating Elements */}
             <motion.div
