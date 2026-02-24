@@ -112,7 +112,7 @@ export default function Home() {
               className="relative z-10"
             >
               <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary-400 via-accent-400 to-primary-500 p-2 shadow-2xl animate-gradient bg-200%">
-                <div className="w-full h-full rounded-3xl bg-white dark:bg-gray-800 flex items-center justify-center text-9xl shadow-inner">
+                <div className="w-full h-full rounded-3xl bg-white dark:bg-gray-800 flex items-center justify-center text-6xl md:text-7xl shadow-inner">
                   🎁
                 </div>
               </div>
