@@ -33,12 +33,11 @@ export default function AdminDashboard() {
   const loadOrders = async () => {
     try {
       const { data } = await orderAPI.getAllOrders();
-      console.log('Loaded orders:', data);
+      console.log('Loaded orders:', data); // Debug log
       setOrders(data);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Failed to load orders', error);
-      console.error('Error response:', error.response?.data);
-      console.error('Error status:', error.response?.status);
+      console.error('Error response:', error.response?.data); // Debug log
     } finally {
       setLoading(false);
     }
