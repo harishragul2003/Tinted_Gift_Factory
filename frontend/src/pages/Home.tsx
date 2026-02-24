@@ -43,7 +43,38 @@ export default function Home() {
     <div className="space-y-20">
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-[80vh] flex items-center justify-center">
-        <div className="max-w-4xl mx-auto text-center">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360],
+              opacity: [0.3, 0.5, 0.3]
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.3, 1],
+              rotate: [360, 180, 0],
+              opacity: [0.3, 0.6, 0.3]
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-3xl"
+          />
+          <motion.div
+            animate={{
+              scale: [1, 1.4, 1],
+              x: [0, 100, 0],
+              opacity: [0.2, 0.4, 0.2]
+            }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-1/2 left-1/2 w-80 h-80 bg-gradient-to-r from-orange-500 to-red-500 rounded-full blur-3xl"
+          />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -56,18 +87,43 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <span className="animate-gradient-text text-6xl md:text-8xl">
+              <motion.span 
+                className="inline-block text-6xl md:text-8xl font-extrabold"
+                animate={{
+                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                style={{
+                  backgroundImage: "linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #ec4899)",
+                  backgroundSize: "200% 200%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 Surprise
-              </span>
+              </motion.span>
               <br />
-              <span className="text-gray-800 dark:text-white">Your Loved Ones</span>
+              <motion.span 
+                className="text-white drop-shadow-2xl"
+                animate={{
+                  textShadow: [
+                    "0 0 20px rgba(236, 72, 153, 0.5)",
+                    "0 0 40px rgba(139, 92, 246, 0.5)",
+                    "0 0 20px rgba(236, 72, 153, 0.5)"
+                  ]
+                }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                Your Loved Ones
+              </motion.span>
             </motion.h1>
             
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
+              className="text-xl text-gray-100 dark:text-gray-200 max-w-2xl mx-auto drop-shadow-lg font-medium"
             >
               Discover premium, curated gift collections for every special moment. 
               Make memories that last forever.
@@ -81,9 +137,17 @@ export default function Home() {
             >
               <Link to="/products">
                 <motion.button
-                  whileHover={{ scale: 1.08, boxShadow: "0 20px 40px rgba(244, 63, 94, 0.4)" }}
+                  whileHover={{ scale: 1.08, boxShadow: "0 20px 40px rgba(244, 63, 94, 0.6)" }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-full font-bold text-lg shadow-2xl hover:shadow-primary-500/50 transition-all duration-300 flex items-center space-x-3 glow-effect animate-pulse-slow"
+                  animate={{
+                    boxShadow: [
+                      "0 10px 30px rgba(236, 72, 153, 0.4)",
+                      "0 10px 30px rgba(139, 92, 246, 0.4)",
+                      "0 10px 30px rgba(236, 72, 153, 0.4)"
+                    ]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="px-10 py-5 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white rounded-full font-bold text-lg shadow-2xl transition-all duration-300 flex items-center space-x-3 animate-gradient bg-200%"
                 >
                   <span>Shop Now</span>
                   <ArrowRight size={24} />
@@ -91,13 +155,62 @@ export default function Home() {
               </Link>
               
               <motion.button
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.05, borderColor: "rgba(236, 72, 153, 1)" }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-5 bg-white dark:bg-gray-800 text-gray-800 dark:text-white rounded-full font-bold text-lg shadow-2xl hover:shadow-xl transition-all duration-300 border-2 border-primary-300 dark:border-primary-700 hover:border-primary-500"
+                className="px-10 py-5 bg-white/10 backdrop-blur-md text-white rounded-full font-bold text-lg shadow-2xl hover:shadow-xl transition-all duration-300 border-2 border-white/30 hover:bg-white/20"
               >
                 Learn More
               </motion.button>
             </motion.div>
+
+            {/* Floating Emojis */}
+            <div className="absolute inset-0 pointer-events-none">
+              <motion.div
+                animate={{ 
+                  y: [0, -30, 0],
+                  rotate: [0, 10, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-10 left-10 text-6xl drop-shadow-2xl"
+              >
+                🎁
+              </motion.div>
+              <motion.div
+                animate={{ 
+                  y: [0, 30, 0],
+                  rotate: [0, -10, 0],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                className="absolute top-20 right-20 text-5xl drop-shadow-2xl"
+              >
+                ✨
+              </motion.div>
+              <motion.div
+                animate={{ 
+                  y: [0, -20, 0],
+                  x: [0, 20, 0],
+                  rotate: [0, 15, 0],
+                  scale: [1, 1.15, 1]
+                }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                className="absolute bottom-20 left-20 text-5xl drop-shadow-2xl"
+              >
+                💝
+              </motion.div>
+              <motion.div
+                animate={{ 
+                  y: [0, 25, 0],
+                  x: [0, -15, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                className="absolute bottom-32 right-16 text-5xl drop-shadow-2xl"
+              >
+                🎀
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </section>
