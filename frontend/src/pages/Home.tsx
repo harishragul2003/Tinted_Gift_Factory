@@ -43,10 +43,10 @@ export default function Home() {
     <div className="space-y-20">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
@@ -67,7 +67,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
+              className="text-xl text-gray-600 dark:text-gray-300"
             >
               Discover premium, curated gift collections for every special moment. 
               Make memories that last forever.
@@ -77,7 +77,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-4 justify-center"
+              className="flex flex-wrap gap-4"
             >
               <Link to="/products">
                 <motion.button
@@ -97,15 +97,6 @@ export default function Home() {
               >
                 Learn More
               </motion.button>
-            </motion.div>
-          </motion.div>
-        </div>
-            <motion.div
-              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="absolute -top-5 -left-5 text-6xl"
-            >
-              💝
             </motion.div>
           </motion.div>
         </div>
