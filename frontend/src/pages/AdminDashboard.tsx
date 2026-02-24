@@ -86,6 +86,7 @@ export default function AdminDashboard() {
   const sidebarItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'products', label: 'Products', icon: Package },
+    { id: 'categories', label: 'Categories', icon: TrendingUp },
     { id: 'orders', label: 'Orders', icon: ShoppingBag },
     { id: 'customers', label: 'Customers', icon: UserCircle },
     { id: 'settings', label: 'Settings', icon: Settings },
@@ -148,6 +149,7 @@ export default function AdminDashboard() {
         <div className="p-8">
           {activeTab === 'dashboard' && <DashboardContent stats={stats} orders={orders} orderStatusData={orderStatusData} />}
           {activeTab === 'products' && <ProductsContent />}
+          {activeTab === 'categories' && <CategoriesContent />}
           {activeTab === 'orders' && <OrdersContent orders={orders} loading={loading} updateOrderStatus={updateOrderStatus} />}
           {activeTab === 'customers' && <CustomersContent users={users} loadUsers={loadUsers} />}
           {activeTab === 'settings' && <SettingsContent />}
@@ -831,6 +833,188 @@ function OrdersContent({ orders, loading, updateOrderStatus }: any) {
           </div>
         )}
       </motion.div>
+    </div>
+  );
+}
+
+// Categories Tab Content
+function CategoriesContent() {
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    icon: ''
+  });
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const { data } = await categoryAPI.getAll();
+      setCategories(data);
+    } catch (error) {
+      console.error('Failed to load categories', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await categoryAPI.create(formData);
+      loadCategories();
+      closeModal();
+    } catch (error) {
+      console.error('Failed to create category', error);
+      alert('Failed to create category. Please try again.');
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setFormData({ name: '', description: '', icon: '' });
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">
+              <span className="animate-gradient-text">Categories Management</span>
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">Manage product categories</p>
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowModal(true)}
+            className="px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+          >
+            <span className="text-xl">+</span>
+            <span>Add Category</span>
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4 animate-bounce">📁</div>
+          <p className="text-gray-600 dark:text-gray-400">Loading categories...</p>
+        </div>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((category, index) => (
+            <motion.div
+              key={category.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-primary-100 dark:border-primary-900 hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="text-5xl mb-4">{category.icon || '📦'}</div>
+              <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">{category.name}</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">{category.description || 'No description'}</p>
+              <div className="text-sm text-gray-500 dark:text-gray-500">
+                Created: {new Date(category.created_at).toLocaleDateString()}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {categories.length === 0 && !loading && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-2xl p-12 shadow-xl border border-primary-100 dark:border-primary-900 text-center"
+        >
+          <div className="text-6xl mb-4">📁</div>
+          <h3 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">No Categories Yet</h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">Start by adding your first category</p>
+          <button
+            onClick={() => setShowModal(true)}
+            className="px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            Add Your First Category
+          </button>
+        </motion.div>
+      )}
+
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full shadow-2xl"
+          >
+            <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">Add New Category</h2>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Category Name</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="e.g., Wedding Gifts"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  rows={3}
+                  placeholder="Brief description of the category"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Icon (Emoji)</label>
+                <input
+                  type="text"
+                  value={formData.icon}
+                  onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="e.g., 💍 or 🎁"
+                  maxLength={2}
+                />
+              </div>
+
+              <div className="flex space-x-4 pt-4">
+                <button
+                  type="submit"
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  Create Category
+                </button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="flex-1 px-6 py-3 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-bold hover:bg-gray-400 dark:hover:bg-gray-500 transition-all duration-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
