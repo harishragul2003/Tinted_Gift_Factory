@@ -19,7 +19,27 @@ const transporter = nodemailer.createTransport({
   socketTimeout: 10000
 });
 
+// Log email configuration on startup
+console.log('📧 Email Configuration:', {
+  host: process.env.EMAIL_HOST,
+  port: process.env.EMAIL_PORT,
+  user: process.env.EMAIL_USER,
+  hasPassword: !!process.env.EMAIL_PASSWORD,
+  adminEmail: process.env.ADMIN_EMAIL
+});
+
+// Verify transporter configuration
+transporter.verify(function (error, success) {
+  if (error) {
+    console.error('❌ Email transporter verification failed:', error);
+  } else {
+    console.log('✅ Email server is ready to send messages');
+  }
+});
+
 export const sendOrderConfirmation = async (userEmail, orderDetails) => {
+  console.log('📧 Attempting to send order confirmation to:', userEmail);
+  
   try {
     const itemsList = orderDetails.items?.map(item => `
       <tr>
@@ -169,9 +189,15 @@ export const sendOrderConfirmation = async (userEmail, orderDetails) => {
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('✅ Order confirmation email sent to:', userEmail);
+    console.log('✅ Order confirmation email sent successfully to:', userEmail);
   } catch (error) {
-    console.error('❌ Email sending error:', error);
+    console.error('❌ Email sending error:', {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+      response: error.response
+    });
+    throw error;
   }
 };
 
@@ -225,8 +251,11 @@ export const sendOrderStatusUpdate = async (userEmail, orderDetails) => {
 
 // Admin notification for new orders
 export const sendAdminOrderNotification = async (orderDetails, customerInfo) => {
+  console.log('📧 Attempting to send admin notification for order:', orderDetails.id);
+  
   try {
     const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
+    console.log('📧 Admin email address:', adminEmail);
     
     const itemsList = orderDetails.items?.map(item => `
       <tr style="border-bottom: 1px solid #e5e7eb;">
@@ -382,8 +411,14 @@ export const sendAdminOrderNotification = async (orderDetails, customerInfo) => 
     };
 
     await transporter.sendMail(mailOptions);
-    console.log('✅ Admin notification email sent for order:', orderDetails.id);
+    console.log('✅ Admin notification email sent successfully for order:', orderDetails.id);
   } catch (error) {
-    console.error('❌ Admin email sending error:', error);
+    console.error('❌ Admin email sending error:', {
+      message: error.message,
+      code: error.code,
+      command: error.command,
+      response: error.response
+    });
+    throw error;
   }
 };

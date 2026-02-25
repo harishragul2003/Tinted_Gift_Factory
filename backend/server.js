@@ -89,6 +89,42 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Test email endpoint
+app.get('/api/test-email', async (req, res) => {
+  try {
+    const { sendOrderConfirmation } = await import('./utils/emailService.js');
+    
+    const testEmail = req.query.email || process.env.EMAIL_USER;
+    
+    await sendOrderConfirmation(testEmail, {
+      id: 'test-' + Date.now(),
+      total_amount: 1000,
+      payment_status: 'Pending',
+      order_status: 'Processing',
+      shipping_address: '123 Test Street, Test City, 12345',
+      items: [
+        { name: 'Test Product 1', quantity: 2, price: 500 },
+        { name: 'Test Product 2', quantity: 1, price: 500 }
+      ]
+    });
+    
+    res.json({ 
+      success: true, 
+      message: 'Test email sent successfully!',
+      sentTo: testEmail
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      error: error.message,
+      details: {
+        code: error.code,
+        command: error.command
+      }
+    });
+  }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
