@@ -1,4 +1,5 @@
 import pool from '../config/db.js';
+import { sendOrderConfirmation, sendAdminOrderNotification } from '../utils/emailService.js';
 
 export const createOrder = async (req, res) => {
   const client = await pool.connect();
@@ -18,12 +19,25 @@ export const createOrder = async (req, res) => {
 
     const order = orderResult.rows[0];
 
-    // Create order items
+    // Create order items and collect product details
+    const orderItems = [];
     for (const item of items) {
       await client.query(
         'INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ($1, $2, $3, $4)',
         [order.id, item.product_id, item.quantity, item.price]
       );
+
+      // Get product details for email
+      const productResult = await client.query(
+        'SELECT name FROM products WHERE id = $1',
+        [item.product_id]
+      );
+      
+      orderItems.push({
+        name: productResult.rows[0]?.name || 'Product',
+        quantity: item.quantity,
+        price: item.price
+      });
 
       // Update product stock
       await client.query(
@@ -32,7 +46,39 @@ export const createOrder = async (req, res) => {
       );
     }
 
+    // Get user details for emails
+    const userResult = await client.query(
+      'SELECT name, email, phone FROM users WHERE id = $1',
+      [user_id]
+    );
+    const user = userResult.rows[0];
+
     await client.query('COMMIT');
+
+    // Send confirmation email to customer
+    const orderDetailsForCustomer = {
+      id: order.id,
+      total_amount: order.total_amount,
+      payment_status: order.payment_status,
+      order_status: order.order_status,
+      shipping_address: order.shipping_address,
+      items: orderItems
+    };
+    
+    sendOrderConfirmation(user.email, orderDetailsForCustomer).catch(err => 
+      console.error('Failed to send customer email:', err)
+    );
+
+    // Send notification email to admin
+    const customerInfo = {
+      name: user.name,
+      email: user.email,
+      phone: user.phone || order.phone
+    };
+    
+    sendAdminOrderNotification(orderDetailsForCustomer, customerInfo).catch(err => 
+      console.error('Failed to send admin email:', err)
+    );
 
     res.status(201).json(order);
   } catch (error) {
