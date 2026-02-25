@@ -92,9 +92,9 @@ app.get('/health', (req, res) => {
 // Test email endpoint
 app.get('/api/test-email', async (req, res) => {
   try {
-    const { sendOrderConfirmation } = await import('./utils/emailService.js');
+    const { sendOrderConfirmation } = await import('./utils/emailServiceResend.js');
     
-    const testEmail = req.query.email || process.env.EMAIL_USER;
+    const testEmail = req.query.email || process.env.ADMIN_EMAIL;
     
     await sendOrderConfirmation(testEmail, {
       id: 'test-' + Date.now(),
