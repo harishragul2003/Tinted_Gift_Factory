@@ -21,7 +21,13 @@ const pool = process.env.DATABASE_URL
       password: process.env.DB_PASSWORD,
       ssl: {
         rejectUnauthorized: false
-      }
+      },
+      // Force IPv4 to avoid IPv6 timeout issues
+      family: 4,
+      // Add connection timeout
+      connectionTimeoutMillis: 10000,
+      // Add idle timeout
+      idleTimeoutMillis: 30000
     });
 
 pool.on('connect', () => {
