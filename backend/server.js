@@ -22,10 +22,18 @@ const allowedOrigins = [
   /https:\/\/artify-aura-.*\.vercel\.app$/ // Allow all Vercel preview deployments
 ];
 
+// Log CORS configuration on startup
+console.log('🔒 CORS Configuration:');
+console.log('Allowed origins:', allowedOrigins);
+console.log('FRONTEND_URL from env:', process.env.FRONTEND_URL);
+
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('✅ CORS: Allowing request with no origin');
+      return callback(null, true);
+    }
     
     // Check if origin is in allowed list or matches regex pattern
     const isAllowed = allowedOrigins.some(allowed => {
@@ -39,9 +47,10 @@ app.use(cors({
     });
     
     if (isAllowed) {
+      console.log('✅ CORS: Allowing origin:', origin);
       callback(null, true);
     } else {
-      console.log('CORS blocked origin:', origin);
+      console.log('❌ CORS: Blocking origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -62,7 +71,22 @@ app.use('/api/admin/users', userRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Artify Aura API is running' });
+  res.json({ 
+    status: 'OK', 
+    message: 'Artify Aura API is running',
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV,
+    corsOrigins: allowedOrigins.map(o => o instanceof RegExp ? o.toString() : o)
+  });
+});
+
+// Root health check (without /api prefix)
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'Artify Aura API is running',
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Error handling middleware

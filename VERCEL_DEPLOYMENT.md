@@ -26,9 +26,18 @@ However, if you want to use Vercel, you'll need to:
 
 5. Add Environment Variable:
    - **Name**: `VITE_API_URL`
-   - **Value**: `https://your-backend-url.onrender.com/api` (your backend URL from Render)
+   - **Value**: `https://artify-aura-api.onrender.com/api`
+   - **CRITICAL**: Must include `/api` at the end or you'll get CORS errors
+   - Add for all environments (Production, Preview, Development)
 
 6. Click "Deploy"
+
+### After Deployment
+
+If you see CORS errors in the browser console:
+1. Verify `VITE_API_URL` is set correctly in Vercel (with `/api` suffix)
+2. Redeploy the frontend after adding/updating environment variables
+3. Check that your backend on Render is running and accessible
 
 ### Deploy Backend on Render
 
@@ -66,8 +75,9 @@ If you want to use Vercel for both, you'll need to convert the backend to server
 
 ### Frontend (Vercel)
 ```
-VITE_API_URL=https://your-backend.onrender.com/api
+VITE_API_URL=https://artify-aura-api.onrender.com/api
 ```
+**Note:** The `/api` suffix is required. Without it, requests will fail with CORS errors.
 
 ### Backend (Render)
 ```
