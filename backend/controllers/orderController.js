@@ -1,5 +1,5 @@
 import pool from '../config/db.js';
-import { sendOrderConfirmation, sendAdminOrderNotification } from '../utils/emailService.js';
+import { sendOrderConfirmation, sendAdminOrderNotification } from '../utils/emailServiceResend.js';
 
 export const createOrder = async (req, res) => {
   const client = await pool.connect();
