@@ -65,9 +65,13 @@ export const createOrder = async (req, res) => {
       items: orderItems
     };
     
-    sendOrderConfirmation(user.email, orderDetailsForCustomer).catch(err => 
-      console.error('Failed to send customer email:', err)
-    );
+    console.log('📧 Sending customer email to:', user.email);
+    sendOrderConfirmation(user.email, orderDetailsForCustomer)
+      .then(() => console.log('✅ Customer email queued successfully'))
+      .catch(err => {
+        console.error('❌ Failed to send customer email:', err.message);
+        console.error('Customer email details:', { email: user.email, orderId: order.id });
+      });
 
     // Send notification email to admin
     const customerInfo = {
@@ -76,9 +80,12 @@ export const createOrder = async (req, res) => {
       phone: user.phone || order.phone
     };
     
-    sendAdminOrderNotification(orderDetailsForCustomer, customerInfo).catch(err => 
-      console.error('Failed to send admin email:', err)
-    );
+    console.log('📧 Sending admin email for order:', order.id);
+    sendAdminOrderNotification(orderDetailsForCustomer, customerInfo)
+      .then(() => console.log('✅ Admin email queued successfully'))
+      .catch(err => {
+        console.error('❌ Failed to send admin email:', err.message);
+      });
 
     res.status(201).json(order);
   } catch (error) {
