@@ -69,23 +69,36 @@ function App() {
               </Routes>
             </MainLayout>
             <Toaster
-              position="top-right"
+              position="top-center"
               toastOptions={{
-                duration: 3000,
+                duration: 2000,
                 style: {
                   background: '#fff',
                   color: '#333',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  padding: '16px 24px',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
                 },
                 success: {
                   iconTheme: {
                     primary: '#10b981',
                     secondary: '#fff',
                   },
+                  style: {
+                    background: '#10b981',
+                    color: '#fff',
+                  },
                 },
                 error: {
                   iconTheme: {
                     primary: '#ef4444',
                     secondary: '#fff',
+                  },
+                  style: {
+                    background: '#ef4444',
+                    color: '#fff',
                   },
                 },
               }}

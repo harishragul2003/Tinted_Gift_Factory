@@ -35,9 +35,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      toast.success('Login successful!');
+      
+      // Show success message
+      toast.success('✅ Login successful! Welcome back!', {
+        duration: 2000,
+        style: {
+          background: '#10b981',
+          color: '#fff',
+          fontWeight: 'bold',
+          padding: '16px',
+        },
+      });
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      toast.error(error.response?.data?.message || '❌ Login failed. Please try again.', {
+        duration: 3000,
+      });
       throw error;
     }
   };
@@ -49,9 +61,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      toast.success('Registration successful!');
+      
+      // Show success message
+      toast.success('🎉 Registration successful! Welcome to Artify Aura!', {
+        duration: 2000,
+        style: {
+          background: '#10b981',
+          color: '#fff',
+          fontWeight: 'bold',
+          padding: '16px',
+        },
+      });
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+      toast.error(error.response?.data?.message || '❌ Registration failed. Please try again.', {
+        duration: 3000,
+      });
       throw error;
     }
   };
@@ -61,7 +85,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    toast.success('Logged out successfully');
+    
+    // Show success message
+    toast.success('👋 Logged out successfully! See you soon!', {
+      duration: 2000,
+      style: {
+        background: '#3b82f6',
+        color: '#fff',
+        fontWeight: 'bold',
+        padding: '16px',
+      },
+    });
   };
 
   return (
