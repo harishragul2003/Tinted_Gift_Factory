@@ -684,9 +684,18 @@ function ProductsContent() {
 // Orders Tab Content
 function OrdersContent({ orders, loading, updateOrderStatus }: any) {
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
+  const [screenshotModal, setScreenshotModal] = useState<string | null>(null);
 
   const toggleOrderDetails = (orderId: string) => {
     setExpandedOrder(expandedOrder === orderId ? null : orderId);
+  };
+
+  const openScreenshotModal = (url: string) => {
+    setScreenshotModal(url);
+  };
+
+  const closeScreenshotModal = () => {
+    setScreenshotModal(null);
   };
 
   return (
@@ -790,14 +799,13 @@ function OrdersContent({ orders, loading, updateOrderStatus }: any) {
                                 <p className="text-gray-700 dark:text-gray-300">Transaction ID: {order.transaction_id || 'N/A'}</p>
                                 <p className="text-gray-700 dark:text-gray-300">Status: {order.payment_status}</p>
                                 {order.payment_screenshot_url && (
-                                  <a 
-                                    href={order.payment_screenshot_url} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-primary-600 dark:text-primary-400 hover:underline mt-2 inline-block"
+                                  <button
+                                    onClick={() => openScreenshotModal(order.payment_screenshot_url)}
+                                    className="mt-3 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-300 flex items-center space-x-2"
                                   >
-                                    View Payment Screenshot
-                                  </a>
+                                    <span>🖼️</span>
+                                    <span>View Payment Screenshot</span>
+                                  </button>
                                 )}
                               </div>
                             </div>
@@ -838,6 +846,57 @@ function OrdersContent({ orders, loading, updateOrderStatus }: any) {
           </div>
         )}
       </motion.div>
+
+      {/* Payment Screenshot Modal */}
+      {screenshotModal && (
+        <div 
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={closeScreenshotModal}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-auto shadow-2xl"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Payment Screenshot</h3>
+              <button
+                onClick={closeScreenshotModal}
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            <div className="flex justify-center">
+              <img
+                src={screenshotModal}
+                alt="Payment Screenshot"
+                className="max-w-full h-auto rounded-lg shadow-lg"
+                onError={(e) => {
+                  e.currentTarget.src = 'https://via.placeholder.com/600x400?text=Image+Not+Found';
+                }}
+              />
+            </div>
+            <div className="mt-4 flex justify-end space-x-3">
+              <a
+                href={screenshotModal}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300"
+              >
+                Open in New Tab
+              </a>
+              <button
+                onClick={closeScreenshotModal}
+                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-medium hover:bg-gray-400 dark:hover:bg-gray-500 transition-all duration-300"
+              >
+                Close
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
